@@ -32,7 +32,7 @@ https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsxys-nopopup.plugin
 
 处理：`msg` 命中「公告 / 通告 / notice」时，把 `data` 清空为 `{}`，弹窗没有内容自然不显示。
 
-### ③ 新版本更新弹窗
+### ③ 新版本更新弹窗（接口字段级）
 
 处理：两种命中方式
 
@@ -79,3 +79,17 @@ https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsxys-nopopup.plugin
 | 公告弹窗变成空白框 | 把插件停用再启用，让 App 重新拉一次接口（可能缓存了旧响应） |
 | 启动变慢 / 白屏 | 检查是否另外加了 `ioskuka.com` / `app2.dsx.ac` 的 REJECT 规则，和本插件冲突，只留本插件 |
 | 更新弹窗仍在 | 说明更新信息来自加密响应体或本次抓包未覆盖的接口，需在弹窗出现时重新抓一次包定位 |
+
+## 更新弹窗还在？加装「实验插件」
+
+抓包里那几条加密响应（`MHg5NjB4...` + 密文 + 尾部 `xddappsecretkey<编号>`）无法在代理层解密，
+所以如果更新弹窗仍在，说明它的数据藏在加密体里。此时可以加装第二个插件：
+
+```
+https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsxys-noupdate.plugin
+```
+
+原理：App 每个请求都会带 `version: 1.0.7`、`version-number: 17` 两个头，服务端据此判断要不要提示更新。
+该插件把这两个头改写成 `1.0.99` / `99`，服务端就会认为已是最新版。
+
+**注意**：这是实验方案。启用后如果出现播放失败、首页空白等异常，说明服务端会按版本号返回不同结构，直接停用本插件即可。

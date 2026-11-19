@@ -1,0 +1,11 @@
+#!name = 大师兄影视 去弹窗
+#!desc = 拦截 App 内嵌「酷卡 kalert」弹窗 SDK 下发的推广弹窗（加入TG频道 / 酷卡分享）。在请求阶段直接返回「未启用」，不阻塞连接，不会白屏、不拖慢启动。
+#!homepage = https://github.com/ding3700/dsxys-loon
+#!author = ding3700
+#!system = ios
+
+[Script]
+http-request ^https?://(ioskuka\.com|fk\.ioskuka\.com)/kalert/(config|status|event)[0-9]*\.(json|php) script-path=https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsx_kuka_block.js, requires-body=false, timeout=5, tag=酷卡弹窗拦截
+
+[MITM]
+hostname = %APPEND% ioskuka.com, fk.ioskuka.com

@@ -1,11 +1,12 @@
 #!name = 大师兄影视 去弹窗
-#!desc = 拦截 App 内嵌「酷卡 kalert」弹窗 SDK 下发的推广弹窗（加入TG频道 / 酷卡分享）。在请求阶段直接返回「未启用」，不阻塞连接，不会白屏、不拖慢启动。
+#!desc = 去掉三类弹窗：① 酷卡(kalert)推广弹窗 ② 置顶公告/通告弹窗 ③ 新版本更新弹窗。全部在请求/响应阶段直接改写，不阻塞连接，不白屏、不拖慢启动。
 #!homepage = https://github.com/ding3700/dsxys-loon
 #!author = ding3700
 #!system = ios
 
 [Script]
-http-request ^https?://(ioskuka\.com|fk\.ioskuka\.com)/kalert/(config|status|event)[0-9]*\.(json|php) script-path=https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsx_kuka_block.js, requires-body=false, timeout=5, tag=酷卡弹窗拦截
+http-request ^https?://(ioskuka\.com|fk\.ioskuka\.com)/kalert/(config|status|event)[0-9]*\.(json|php) script-path=https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsx_kuka_block.js, requires-body=false, timeout=5, tag=酷卡推广弹窗
+http-response ^https?://app2\.dsx\.ac/ndsx\.php/ script-path=https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsx_api_clean.js, requires-body=true, timeout=5, tag=公告与更新弹窗
 
 [MITM]
-hostname = %APPEND% ioskuka.com, fk.ioskuka.com
+hostname = %APPEND% ioskuka.com, fk.ioskuka.com, app2.dsx.ac

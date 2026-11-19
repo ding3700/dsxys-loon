@@ -1,0 +1,9 @@
+#!name = 大师兄影视 去更新弹窗(实验)
+#!desc = 把 App 上报的版本号伪造成更高版本，让服务端认为已是最新版、不再下发更新提示。仅当主插件去不掉更新弹窗时才需要启用；若启用后播放/首页异常，直接停用本插件即可。
+#!homepage = https://github.com/ding3700/dsxys-loon
+#!author = ding3700
+#!system = ios
+
+[Rewrite]
+^http://app2\.dsx\.ac/ndsx\.php/ header-replace version-number 99
+^http://app2\.dsx\.ac/ndsx\.php/ header-replace version 1.0.99

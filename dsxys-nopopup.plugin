@@ -1,5 +1,5 @@
 #!name = 大师兄影视 去弹窗
-#!desc = 去掉三类弹窗：① 酷卡(kalert)推广弹窗 ② 置顶公告/通告弹窗 ③ 版本更新弹窗（接口字段级）。全部在请求/响应阶段直接改写，不阻塞连接，不白屏。
+#!desc = 去掉三类弹窗：① 酷卡(kalert)推广弹窗 ② 置顶公告/通告弹窗 ③ 版本更新弹窗。接口类在响应阶段改字段，伪装CDN的加密启动配置直接拦断，不阻塞主流连接。
 #!homepage = https://github.com/ding3700/dsxys-loon
 #!author = ding3700
 #!system = ios
@@ -8,5 +8,11 @@
 http-request ^https?://([\w-]+\.)?ioskuka\.com/kalert/ script-path=https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsx_kuka_block.js, requires-body=false, timeout=5, tag=酷卡弹窗
 http-response ^https?://app2\.dsx\.ac/ndsx\.php/ script-path=https://raw.githubusercontent.com/ding3700/dsxys-loon/main/dsx_api_clean.js, requires-body=true, timeout=5, tag=公告与更新弹窗
 
+[URL Rewrite]
+# 伪装成常规CDN的加密「启动配置」下发通道（弹窗文案/开屏素材），直接拦断
+^https?://eliteres\.fanruan\.com/office/[0-9]{4}/[0-9]{2}/[0-9]{2}/[0-9a-fA-F]{8}-[0-9a-fA-F-]{27}$ REJECT
+^https?://log-alibaba-taobao-douyin\.cdn\.bcebos\.com/do REJECT
+^http://rk-1307787311\.file\.myqcloud\.com/do REJECT
+
 [MITM]
-hostname = %APPEND% ioskuka.com, *.ioskuka.com
+hostname = %APPEND% ioskuka.com, *.ioskuka.com, app2.dsx.ac
